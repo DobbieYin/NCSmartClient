@@ -6,8 +6,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.*;
-import java.net.URI;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,7 +20,7 @@ public class NCSmartClientImpl implements INCSmartClient {
      *
      */
     public static final String SPLITCHAR = "<";
-    public static final String CLIENTRES = "/clientres";
+    public static final String CLIENTRES = "clientres";
     public static final String CLIENTS_PROPERTIES = "clients.properties";
 
     @Override
@@ -119,10 +117,8 @@ public class NCSmartClientImpl implements INCSmartClient {
     public boolean openClient(NCSmartClientVO vo) throws Exception {
         if(vo == null) return false;
         try {
-            URL resource = this.getClass().getResource(CLIENTRES);
-            URI uri = resource != null ? resource.toURI() : null;
             //读取文件
-            String clientres = new String(Files.readAllBytes(Paths.get(uri)));
+            String clientres = new String(Files.readAllBytes(Paths.get(CLIENTRES)));
             //替换IP地址和端口
             clientres = clientres.replace("[ip]",vo.getIp());
             clientres = clientres.replace("[port]",vo.getPort());
