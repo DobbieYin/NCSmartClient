@@ -4,29 +4,27 @@ import com.view.service.impl.NCSmartClientImpl;
 import com.view.service.itf.INCSmartClient;
 import com.view.vo.NCSmartClientVO;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseButton;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
-
 public class NCSmartClientCtrl {
-    public static final String BUTTONTEXT_SAVE = "保存";
-    public static final String BUTTONTEXT_EDIT = "修改";
 
     public TableColumn tblc_name;
     public TableColumn tblc_javahome;
     public TableColumn tblc_ip;
     public TableColumn tblc_port;
 
+    public TextField txt_name;
+    public TextField txt_javahome;
+    public TextField txt_ip;
+    public TextField txt_port;
+
     public Label lbl_status;
 
     public Button btn_add;
-    public Button btn_edit;
+    public Button btn_save;
     public Button btn_del;
     public Button btn_refresh;
 
@@ -57,6 +55,12 @@ public class NCSmartClientCtrl {
             //2.Lambda表达式实现
             this.tbl_clients.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                         currSelectedItem = newValue != null ? newValue : oldValue;
+                        if(currSelectedItem != null){
+                            this.txt_name.setText(currSelectedItem.getName());
+                            this.txt_ip.setText(currSelectedItem.getIp());
+                            this.txt_port.setText(currSelectedItem.getPort());
+                            this.txt_javahome.setText(currSelectedItem.getJavahome());
+                        }
                     }
             );
 
@@ -84,28 +88,6 @@ public class NCSmartClientCtrl {
         column.setCellValueFactory(new PropertyValueFactory<NCSmartClientVO, String>(propertyName));//设置列值映射
         column.setCellFactory(TextFieldTableCell.<NCSmartClientVO>forTableColumn());
         column.setSortType(TableColumn.SortType.ASCENDING);
-        column.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent>() {
-            @Override
-            public void handle(TableColumn.CellEditEvent t) {
-                NCSmartClientVO vo = (NCSmartClientVO)t.getTableView().getItems().get(t.getTablePosition().getRow());//.setName(t.getNewValue());
-                if(vo != null){
-                    try {
-                        //反射赋值
-                        Class clazz = vo.getClass();//获取雷对象
-                        Field field = clazz.getDeclaredField(propertyName);//获取子段对象
-                        for (Method method : clazz.getDeclaredMethods()) {
-                            method.setAccessible(true);//打开私有可访问性
-                            if(("SET"+propertyName.toUpperCase()).equals(method.getName().toUpperCase())){
-                                method.invoke(vo,t.getNewValue());//设置新的值
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        System.err.println("更新异常：" + e.getMessage());
-                    }
-                }
-            }
-        });
     }
     /**
      * 新增
@@ -113,31 +95,28 @@ public class NCSmartClientCtrl {
     public void addAction(){
         this.tbl_clients.getItems().add(new NCSmartClientVO("", "", ""));
         this.lbl_status.setText("新增成功！");
-        editAction();
+        //editAction();
     }
 
     /**
-     *修改
+     *保存
      */
-    public void editAction(){
+    public void saveAction(){
         if(this.tbl_clients.getItems().size() > 0) {
-            if (BUTTONTEXT_EDIT.equals(this.btn_edit.getText())) {
-                //修改操作
-                this.tbl_clients.setEditable(true);
-                this.btn_edit.setText(BUTTONTEXT_SAVE);
-                this.lbl_status.setText("开始编辑...");
-            } else {
-                //保存操作
-                this.tbl_clients.setEditable(false);
+            if(currSelectedItem != null){
+                currSelectedItem.setName(this.txt_name.getText());
+                currSelectedItem.setIp(this.txt_ip.getText());
+                currSelectedItem.setPort(this.txt_port.getText());
+                currSelectedItem.setJavahome(this.txt_javahome.getText());
+                this.tbl_clients.getItems().add(currSelectedItem);
                 try {
                     this.reload();
-                    this.lbl_status.setText("编辑成功！");
+                    this.lbl_status.setText("保存成功！");
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.err.println("修改异常：" + e.getMessage());
                     this.lbl_status.setText("编辑失败！");
                 }
-                this.btn_edit.setText(BUTTONTEXT_EDIT);
             }
         }else {
             this.lbl_status.setText("表中无记录！");

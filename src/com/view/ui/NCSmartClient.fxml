@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
@@ -7,20 +8,36 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="489.0" prefWidth="686.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.view.ctrl.NCSmartClientCtrl">
    <center>
-      <TableView fx:id="tbl_clients" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <columns>
-            <TableColumn fx:id="tblc_name" prefWidth="110.0" text="名称" />
-            <TableColumn fx:id="tblc_ip" minWidth="8.0" prefWidth="162.0" text="IP地址" />
-            <TableColumn fx:id="tblc_port" prefWidth="113.0" text="端口" />
-            <TableColumn fx:id="tblc_javahome" prefWidth="189.0" text="JAVA_HOME" />
-         </columns>
-      </TableView>
+      <VBox>
+         <children>
+            <ToolBar prefHeight="40.0" prefWidth="200.0">
+              <items>
+                  <TextField fx:id="txt_name" prefHeight="27.0" prefWidth="102.0" promptText="名称" />
+                  <TextField fx:id="txt_ip" prefHeight="27.0" prefWidth="129.0" promptText="IP地址" />
+                  <TextField fx:id="txt_port" prefHeight="27.0" prefWidth="101.0" promptText="端口" />
+                  <TextField fx:id="txt_javahome" prefHeight="27.0" prefWidth="217.0" promptText="JAVA_HOME" />
+                <Button fx:id="btn_save" mnemonicParsing="false" onAction="#saveAction" text="保存" />
+              </items>
+            </ToolBar>
+            <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="314.0" prefViewportHeight="200.0" prefViewportWidth="686.0" prefWidth="686.0" VBox.vgrow="ALWAYS">
+               <content>
+                  <TableView fx:id="tbl_clients" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <columns>
+                        <TableColumn fx:id="tblc_name" prefWidth="110.0" text="名称" />
+                        <TableColumn fx:id="tblc_ip" minWidth="8.0" prefWidth="162.0" text="IP地址" />
+                        <TableColumn fx:id="tblc_port" prefWidth="113.0" text="端口" />
+                        <TableColumn fx:id="tblc_javahome" prefWidth="189.0" text="JAVA_HOME" />
+                     </columns>
+                  </TableView>
+               </content>
+            </ScrollPane>
+         </children>
+      </VBox>
    </center>
    <top>
       <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <items>
             <Button fx:id="btn_add" mnemonicParsing="false" onAction="#addAction" text="新增" />
-          <Button fx:id="btn_edit" mnemonicParsing="false" onAction="#editAction" text="修改" />
             <Button fx:id="btn_del" mnemonicParsing="false" onAction="#delAction" text="删除" />
             <Button fx:id="btn_refresh" mnemonicParsing="false" onAction="#refreshAction" text="刷新" />
         </items>
