@@ -4,6 +4,7 @@ import com.view.service.impl.NCSmartClientImpl;
 import com.view.service.itf.INCSmartClient;
 import com.view.vo.NCSmartClientVO;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -83,7 +84,9 @@ public class NCSmartClientCtrl {
         column.setCellValueFactory(new PropertyValueFactory<NCSmartClientVO, String>(propertyName));//设置列值映射
         column.setCellFactory(TextFieldTableCell.<NCSmartClientVO>forTableColumn());
         column.setSortType(TableColumn.SortType.ASCENDING);
-        column.setOnEditCommit(t -> {
+        column.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent t) {
                 NCSmartClientVO vo = (NCSmartClientVO)t.getTableView().getItems().get(t.getTablePosition().getRow());//.setName(t.getNewValue());
                 if(vo != null){
                     try {
@@ -102,7 +105,7 @@ public class NCSmartClientCtrl {
                     }
                 }
             }
-        );
+        });
     }
     /**
      * 新增

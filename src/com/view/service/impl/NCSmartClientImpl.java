@@ -5,10 +5,9 @@ import com.view.vo.NCSmartClientVO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.URI;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -70,7 +69,7 @@ public class NCSmartClientImpl implements INCSmartClient {
      * @return
      * @throws IOException
      */
-    private Properties getProperties() throws IOException {
+    private Properties getProperties() throws Exception {
         Properties pro = new Properties();
         File file = getPropertiesFile();
         pro.load(new FileInputStream(file));
@@ -82,7 +81,7 @@ public class NCSmartClientImpl implements INCSmartClient {
      * @return
      * @throws IOException
      */
-    private File getPropertiesFile() throws IOException {
+    private File getPropertiesFile() throws Exception {
         File file = new File(CLIENTS_PROPERTIES);
         if(!file.exists()){
             file.createNewFile();
@@ -120,8 +119,10 @@ public class NCSmartClientImpl implements INCSmartClient {
     public boolean openClient(NCSmartClientVO vo) throws Exception {
         if(vo == null) return false;
         try {
+            URL resource = this.getClass().getResource(CLIENTRES);
+            URI uri = resource != null ? resource.toURI() : null;
             //读取文件
-            String clientres = new String(Files.readAllBytes(Paths.get(this.getClass().getResource(CLIENTRES).toURI())));
+            String clientres = new String(Files.readAllBytes(Paths.get(uri)));
             //替换IP地址和端口
             clientres = clientres.replace("[ip]",vo.getIp());
             clientres = clientres.replace("[port]",vo.getPort());
@@ -130,10 +131,11 @@ public class NCSmartClientImpl implements INCSmartClient {
             Path path = Files.write(Paths.get(vo.getName()), clientres.getBytes());
             //执行命令
             String command = "javaws -localfile -J-Djnlp.application.href=http://" + vo.getIp() + ":" + vo.getPort() + "/ncws.jnlp " + path.toString();
+            command = (vo.getJavahome() != null && !vo.getJavahome().trim().equals("")) ? vo.getJavahome()+"/bin/"+command : command;
             System.out.println("执行命令：\n"+command);
             Process process = Runtime.getRuntime().exec(command);
             return true;
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new Exception("打开客户端异常："+e.getMessage(),e);
         }
     }
