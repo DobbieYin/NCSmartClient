@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<jnlp spec="1.0+" codebase="http://[ip]:[port]/" href="ncws.jnlp">
+	<information>
+		<title>[ip]-[port]</title>
+		<vendor>yonyou</vendor>
+		<homepage href="http://[ip]:[port]/"/>
+		<icon href="logo/images/yonyou_nc.png"/>
+		<icon kind="splash" href="logo.gif" /> 
+	</information>
+	<security>
+		<all-permissions/> 
+		<j2ee-application-client-permissions/>
+	</security>
+	<resources>
+		<j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se" java-vm-args=" -Dsun.awt.keepWorkingSetOnMinimize=true  -XX:PermSize=128m -Xms128m -Xmx512m" />
+		<jar href="/Client/appletjar/UAP_Login_v6.jar"/>
+	</resources>
+	<applet-desc name="NCApplet" main-class="nc.sfbase.applet.NCApplet" width="1024" height="768">
+		<param name="scriptable" value="true"/>
+		<param name="MAYSCRIPT" value="true"/>
+		<param name="boxbgcolor" value="#ffffff"/>
+		<param name="ClientHome" value="null"/>
+		<param name="SCHEME" value="http"/>
+		<param name="SERVER_HOST_NAME" value="[ip]"/>
+		<param name="SERVER_IP" value="is.midea.com"/>
+		<param name="SERVER_PORT" value="[port]"/>
+		<param name="CONTEXT_PATH" value=""/>
+		<param name="USER_WIDTH" value="1024"/>
+		<param name="USER_HEIGHT" value="768"/>
+		<param name="clienttype" value="standard"/>
+		<param name="isClientCacheCode" value="Y"/>
+		<param name="LOGINKEY" value=""/>
+		<param name="redirect" value="Y"/>
+		<param name="isAdmin" value="N"/>
+	</applet-desc>
+	<shortcut>
+		<desktop/>
+		<menu sub-men="ncapplet"/>
+	</shortcut>
+</jnlp>
