@@ -22,7 +22,7 @@ public class NCSmartClientImpl implements INCSmartClient {
      *
      */
     public static final String SPLITCHAR = "<";
-    public static final String CLIENTRES = "clientres";
+    public static final String CLIENTRES = "/clientres";
     public static final String CLIENTS_PROPERTIES = "clients.properties";
 
     @Override
