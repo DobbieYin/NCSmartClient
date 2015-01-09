@@ -2,6 +2,7 @@ package com.view.ctrl;
 
 import com.view.service.impl.NCSmartClientImpl;
 import com.view.service.itf.INCSmartClient;
+import com.view.utils.SafeObject;
 import com.view.vo.NCSmartClientVO;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
@@ -93,32 +94,52 @@ public class NCSmartClientCtrl {
      * 新增
      */
     public void addAction(){
-        this.tbl_clients.getItems().add(new NCSmartClientVO("", "", ""));
-        this.lbl_status.setText("新增成功！");
-        //editAction();
+        this.currSelectedItem = null;
+        this.txt_name.setText("请输入名称");
+        this.txt_ip.setText("");
+        this.txt_port.setText("");
+        this.txt_javahome.setText("");
+
+        this.txt_name.requestFocus();//获取光标
     }
 
     /**
      *保存
      */
-    public void saveAction(){
-        if(this.tbl_clients.getItems().size() > 0) {
-            if(currSelectedItem != null){
-                currSelectedItem.setName(this.txt_name.getText());
-                currSelectedItem.setIp(this.txt_ip.getText());
-                currSelectedItem.setPort(this.txt_port.getText());
-                currSelectedItem.setJavahome(this.txt_javahome.getText());
-                this.tbl_clients.getItems().add(currSelectedItem);
-                try {
+    public void saveAction() {
+        if (this.tbl_clients.getItems().size() > 0) {
+            try {
+                if (currSelectedItem != null) {//修改操作
+                    currSelectedItem.setName(this.txt_name.getText());
+                    currSelectedItem.setIp(this.txt_ip.getText());
+                    currSelectedItem.setPort(this.txt_port.getText());
+                    currSelectedItem.setJavahome(this.txt_javahome.getText());
+                    this.tbl_clients.getItems().add(currSelectedItem);
                     this.reload();
                     this.lbl_status.setText("保存成功！");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.err.println("修改异常：" + e.getMessage());
-                    this.lbl_status.setText("编辑失败！");
+
+                } else {//新增操作
+                    if (!SafeObject.isNotNull(this.txt_name.getText())) {
+                        this.lbl_status.setText("名称不能为空！");
+                        this.txt_name.requestFocus();//获取光标
+                    } else if (!SafeObject.isNotNull(this.txt_ip.getText())) {
+                        this.lbl_status.setText("IP地址不能为空！");
+                        this.txt_ip.requestFocus();//获取光标
+                    } else {
+                        if (SafeObject.isNull(this.txt_port.getText())) {
+                            this.txt_port.setText("80");
+                        }
+                        this.tbl_clients.getItems().add(new NCSmartClientVO(this.txt_name.getText(), this.txt_ip.getText(), this.txt_port.getText(), this.txt_javahome.getText()));
+                        this.reload();
+                        this.lbl_status.setText("新增成功！");
+                    }
                 }
+            } catch (Exception e) {
+                //e.printStackTrace();
+                System.err.println("保存异常：" + e.getMessage());
+                this.lbl_status.setText("保存异常：" + e.getMessage());
             }
-        }else {
+        } else {
             this.lbl_status.setText("表中无记录！");
         }
     }
@@ -137,9 +158,9 @@ public class NCSmartClientCtrl {
                 this.lbl_status.setText("请选中一行！");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println(""+e.getMessage());
-            this.lbl_status.setText("刪除失败！");
+            //e.printStackTrace();
+            System.err.println("刪除异常："+e.getMessage());
+            this.lbl_status.setText("刪除异常："+e.getMessage());
         }
     }
 
@@ -168,9 +189,9 @@ public class NCSmartClientCtrl {
             this.tbl_clients.setItems(this.service.getAll());
             this.lbl_status.setText("刷新成功！");
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             System.err.println("刷新异常：" + e.getMessage());
-            this.lbl_status.setText("刷新失敗！");
+            this.lbl_status.setText("刷新异常：" + e.getMessage());
         }
     }
 
@@ -185,7 +206,7 @@ public class NCSmartClientCtrl {
             this.lbl_status.setText("打开客户端成功！");
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             System.err.println("打开客户端异常：" + e.getMessage());
             this.lbl_status.setText("打开客户端异常：" + e.getMessage());
             return false;

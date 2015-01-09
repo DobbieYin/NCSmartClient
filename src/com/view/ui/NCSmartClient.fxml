@@ -12,10 +12,10 @@
          <children>
             <ToolBar prefHeight="40.0" prefWidth="200.0">
               <items>
-                  <TextField fx:id="txt_name" prefHeight="27.0" prefWidth="102.0" promptText="名称" />
-                  <TextField fx:id="txt_ip" prefHeight="27.0" prefWidth="129.0" promptText="IP地址" />
-                  <TextField fx:id="txt_port" prefHeight="27.0" prefWidth="101.0" promptText="端口" />
-                  <TextField fx:id="txt_javahome" prefHeight="27.0" prefWidth="217.0" promptText="JAVA_HOME" />
+                  <TextField fx:id="txt_name" prefHeight="27.0" prefWidth="102.0" promptText="请输入名称" />
+                  <TextField fx:id="txt_ip" prefHeight="27.0" prefWidth="129.0" promptText="请输入IP地址" />
+                  <TextField fx:id="txt_port" prefHeight="27.0" prefWidth="101.0" promptText="请输入端口" />
+                  <TextField fx:id="txt_javahome" prefHeight="27.0" prefWidth="217.0" promptText="请输入JAVA_HOME" />
                 <Button fx:id="btn_save" mnemonicParsing="false" onAction="#saveAction" text="保存" />
               </items>
             </ToolBar>

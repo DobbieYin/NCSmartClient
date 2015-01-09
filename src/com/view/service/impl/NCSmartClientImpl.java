@@ -55,8 +55,12 @@ public class NCSmartClientImpl implements INCSmartClient {
     private NCSmartClientVO getVOByKeyValuePair(String key,String value) {
         if(key != null && value != null){
             String[] clientInfo = value.split(SPLITCHAR);
-            if(clientInfo != null && clientInfo.length > 2){
-                return new NCSmartClientVO(key,clientInfo[0],clientInfo[1],clientInfo[2]);
+            if(clientInfo != null){
+                if(clientInfo.length>2) {//处理javahome不为空的对象
+                    return new NCSmartClientVO(key, clientInfo[0], clientInfo[1], clientInfo[2]);
+                }else if(clientInfo.length>1) {//处理javahome为空的对象
+                    return new NCSmartClientVO(key, clientInfo[0], clientInfo[1]);
+                }
             }
         }
         return null;
