@@ -2,6 +2,7 @@ package com.view.ctrl;
 
 import com.view.service.impl.NCSmartClientImpl;
 import com.view.service.itf.INCSmartClient;
+import com.view.utils.NCCache;
 import com.view.utils.SafeObject;
 import com.view.vo.NCSmartClientVO;
 import javafx.collections.ObservableList;
@@ -28,6 +29,8 @@ public class NCSmartClientCtrl {
     public Button btn_save;
     public Button btn_del;
     public Button btn_refresh;
+
+    public Button btn_clearNCCache;//清除缓存
 
     public TableView<NCSmartClientVO> tbl_clients;
 
@@ -164,6 +167,25 @@ public class NCSmartClientCtrl {
         }
     }
 
+    /**
+     *清除缓存
+     */
+    public void clearNCCacheAction(){
+        try {
+            NCSmartClientVO selectedItem = getSelectedItem();
+            if (selectedItem != null) {
+                NCCache.getInstance().clearNCCache(selectedItem.getIp(), selectedItem.getPort());
+                this.reload();
+                this.lbl_status.setText("清除缓存成功！");
+            }else{
+                this.lbl_status.setText("请选中一行！");
+            }
+        } catch (Exception e) {
+            //e.printStackTrace();
+            System.err.println("清除缓存异常："+e.getMessage());
+            this.lbl_status.setText("清除缓存异常："+e.getMessage());
+        }
+    }
     /**
      * 获取TableView选中项
      * @return TableView选中项

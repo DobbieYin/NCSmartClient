@@ -40,6 +40,8 @@
             <Button fx:id="btn_add" mnemonicParsing="false" onAction="#addAction" text="新增" />
             <Button fx:id="btn_del" mnemonicParsing="false" onAction="#delAction" text="删除" />
             <Button fx:id="btn_refresh" mnemonicParsing="false" onAction="#refreshAction" text="刷新" />
+            <Separator orientation="VERTICAL" />
+            <Button fx:id="btn_clearNCCache" mnemonicParsing="false" onAction="#clearNCCacheAction" text="清除缓存" />
         </items>
       </ToolBar>
    </top>
