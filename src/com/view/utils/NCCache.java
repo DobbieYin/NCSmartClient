@@ -27,13 +27,13 @@ public class NCCache {
      * @param ip
      * @param port
      */
-    public void clearNCCache(String ip, String port) {
+    public void clearNCCache(String ip, String port) throws Exception{
         try {
             Files.list(Paths.get(System.getProperties().getProperty("user.home") + File.separator + "NCCACHE"))
                     .filter(p -> p.getFileName().toString().startsWith(ip) && p.getFileName().toString().endsWith(port))
                     .forEach(this::deleteDirectory);
         } catch (IOException e) {
-            System.out.println("清除缓存失败！");
+            throw new Exception(e.getMessage(),e);
         }
     }
 
